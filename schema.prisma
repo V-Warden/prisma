@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model Users {
+    id             String              @id
+    last_username  String
+    avatar         String
+    status         UserStatus
+    user_type      UserType
+    servers        String              @default("") @db.LongText
+    roles          String              @default("") @db.LongText
+    filter_type    FilterType
+    reason         String
+    anonymized     Boolean            @default(false)
+    appeals        Int                @default(0)
+    createdAt      DateTime           @default(now())
+    updatedAt      DateTime           @updatedAt
+
+    @@map(name: "users")
+}
+
+model Staff {
+    id              String             @id
+    admin           Boolean            @default(false)
+    dev             Boolean            @default(false)
+    createdAt       DateTime           @default(now())
+    updatedAt       DateTime           @updatedAt
+
+    @@map(name: "staff")
+}
+
+model Guild {
+    id              String              @id @unique
+    name            String
+    logchan         String
+    punown          Punish              @default(BAN)
+    punsupp         Punish              @default(KICK)
+    punleak         Punish              @default(KICK)
+    puncheat        Punish              @default(KICK)
+    appealunban     Boolean             @default(false)
+    createdAt       DateTime            @default(now())
+    updatedAt       DateTime            @updatedAt
+
+    @@map(name: "guild")
+}
+
+model BadServers {
+    id               String             @id @unique
+    name             String
+    type             ServerType         @default(OTHER)
+    addedBy          String
+    createdAt        DateTime           @default(now())
+    updatedAt        DateTime           @updatedAt
+
+    @@map(name: "bad_servers")
+}
+
+enum FilterType {
+    MANUAL
+    SEMI_AUTO
+    AUTO
+}
+
+enum UserType {
+    CHEATER
+    LEAKER
+    SUPPORTER
+    OTHER
+    OWNER
+    BOT
+}
+
+enum ServerType {
+    CHEATING
+    LEAKING
+    RESELLING
+    OTHER
+}
+
+enum UserStatus {
+    APPEALED
+    WHITELIST
+    BLACKLIST
+    PERM_BLACKLIST
+}
+
+enum Punish {
+    WARN
+    KICK
+    BAN
+}
