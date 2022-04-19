@@ -83,6 +83,7 @@ enum ServerType {
     CHEATING
     LEAKING
     RESELLING
+    ADVERTISING
     OTHER
 }
 
