@@ -42,6 +42,7 @@ model Guild {
     id              String              @id @unique
     name            String
     logchan         String
+    enabled         Boolean             @default(false)
     punown          Punish              @default(BAN)
     punsupp         Punish              @default(KICK)
     punleak         Punish              @default(KICK)
