@@ -17,6 +17,7 @@ model Users {
     type            UserType
     status          UserStatus          @default(BLACKLISTED)
     appeals         Int                 @default(0)
+    reason          String?
     servers         Imports[]
     notes           Notes[]
 }
