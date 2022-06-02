@@ -87,6 +87,7 @@ model Punishments {
     other           Punish              @default(WARN)
     enabled         Boolean             @default(false)
     unban           Boolean             @default(false)
+    globalCheck     Boolean             @default(false)
     guild           Guild               @relation(fields: [id], references: [id])
 }
 
