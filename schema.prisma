@@ -79,7 +79,7 @@ model Guild {
 }
 
 model Punishments {
-    id              String              @id @unique @db.VarChar(18)
+    id              String              @id @unique @db.VarChar(32)
     owner           Punish              @default(BAN)
     supporter       Punish              @default(KICK)
     leaker          Punish              @default(WARN)
