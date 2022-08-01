@@ -46,7 +46,7 @@ model Imports {
 }
 
 model BadServers {
-    id              String              @id @unique @db.VarChar(18)
+    id              String              @id @unique @db.VarChar(32)
     name            String
     oldNames        String?             @db.LongText
     type            ServerType
@@ -70,7 +70,7 @@ model Staff {
 }
 
 model Guild {
-    id              String              @id @unique @db.VarChar(18)
+    id              String              @id @unique @db.VarChar(32)
     name            String
     logChannel      String
     punishments     Punishments?
