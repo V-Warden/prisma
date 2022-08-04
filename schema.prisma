@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Users {
-    id              String              @id @unique @db.VarChar(18)
+    id              String              @id @unique @db.VarChar(32)
     last_username   String
     avatar          String
     type            UserType
@@ -24,7 +24,7 @@ model Users {
 
 model Notes {
     nId             Int                 @id @default(autoincrement())
-    id              String              @db.VarChar(18)
+    id              String              @db.VarChar(32)
     note            String              @db.LongText()
     addedBy         String
     createdAt       DateTime            @default(now())
@@ -33,7 +33,7 @@ model Notes {
 }
 
 model Imports {
-    id              String              @db.VarChar(18)
+    id              String              @db.VarChar(32)
     server          String
     roles           String              @db.MediumText()
     type            UserType
@@ -59,7 +59,7 @@ model BadServers {
 }
 
 model Staff {
-    id              String              @id @unique @db.VarChar(18)
+    id              String              @id @unique @db.VarChar(32)
     role            StaffRoles          @default(ADMIN)
     appeals         Int                 @default(0)
     BadServers      BadServers[]
@@ -93,7 +93,7 @@ model Punishments {
 
 model Logs {
     id              Int                 @id @default(autoincrement())
-    executedBy      String              @db.VarChar(18)
+    executedBy      String              @db.VarChar(32)
     action          LogActions
     message         String              @db.LongText
     createdAt       DateTime            @default(now())
