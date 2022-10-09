@@ -89,6 +89,7 @@ model Punishments {
     unban           Boolean             @default(false)
     globalCheck     Boolean             @default(false)
     guild           Guild               @relation(fields: [id], references: [id])
+    roleId          String?             @db.VarChar(32)
 }
 
 model Logs {
