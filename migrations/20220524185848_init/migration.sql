@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE `Users` (
-    `id` VARCHAR(18) NOT NULL,
+    `id` VARCHAR(32) NOT NULL,
     `last_username` VARCHAR(191) NOT NULL,
     `avatar` VARCHAR(191) NOT NULL,
     `type` ENUM('OTHER', 'LEAKER', 'CHEATER', 'SUPPORTER', 'OWNER') NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE `Users` (
 -- CreateTable
 CREATE TABLE `Notes` (
     `nId` INTEGER NOT NULL AUTO_INCREMENT,
-    `id` VARCHAR(18) NOT NULL,
+    `id` VARCHAR(32) NOT NULL,
     `note` LONGTEXT NOT NULL,
     `addedBy` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -24,7 +24,7 @@ CREATE TABLE `Notes` (
 
 -- CreateTable
 CREATE TABLE `Imports` (
-    `id` VARCHAR(18) NOT NULL,
+    `id` VARCHAR(32) NOT NULL,
     `server` VARCHAR(191) NOT NULL,
     `roles` MEDIUMTEXT NOT NULL,
     `type` ENUM('OTHER', 'LEAKER', 'CHEATER', 'SUPPORTER', 'OWNER') NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE `Imports` (
 
 -- CreateTable
 CREATE TABLE `BadServers` (
-    `id` VARCHAR(18) NOT NULL,
+    `id` VARCHAR(32) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `oldNames` LONGTEXT NULL,
     `type` ENUM('CHEATING', 'LEAKING', 'RESELLING', 'ADVERTISING') NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE `BadServers` (
 
 -- CreateTable
 CREATE TABLE `Staff` (
-    `id` VARCHAR(18) NOT NULL,
+    `id` VARCHAR(32) NOT NULL,
     `role` ENUM('DEV', 'ADMIN', 'EXSTAFF') NOT NULL DEFAULT 'ADMIN',
     `appeals` INTEGER NOT NULL DEFAULT 0,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -62,7 +62,7 @@ CREATE TABLE `Staff` (
 
 -- CreateTable
 CREATE TABLE `Guild` (
-    `id` VARCHAR(18) NOT NULL,
+    `id` VARCHAR(32) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `logChannel` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -74,7 +74,7 @@ CREATE TABLE `Guild` (
 
 -- CreateTable
 CREATE TABLE `Punishments` (
-    `id` VARCHAR(18) NOT NULL,
+    `id` VARCHAR(32) NOT NULL,
     `owner` ENUM('WARN', 'KICK', 'BAN') NOT NULL DEFAULT 'BAN',
     `supporter` ENUM('WARN', 'KICK', 'BAN') NOT NULL DEFAULT 'KICK',
     `leaker` ENUM('WARN', 'KICK', 'BAN') NOT NULL DEFAULT 'KICK',
@@ -105,16 +105,16 @@ ALTER TABLE `Notes` ADD CONSTRAINT `Notes_id_fkey` FOREIGN KEY (`id`) REFERENCES
 ALTER TABLE `Notes` ADD CONSTRAINT `Notes_addedBy_fkey` FOREIGN KEY (`addedBy`) REFERENCES `Staff`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Imports` ADD CONSTRAINT `Imports_id_fkey` FOREIGN KEY (`id`) REFERENCES `Users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Imports` ADD CONSTRAINT `Imports_id_fkey` FOREIGN KEY (`id`) REFERENCES `Users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Imports` ADD CONSTRAINT `Imports_server_fkey` FOREIGN KEY (`server`) REFERENCES `BadServers`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Imports` ADD CONSTRAINT `Imports_server_fkey` FOREIGN KEY (`server`) REFERENCES `BadServers`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `BadServers` ADD CONSTRAINT `BadServers_addedBy_fkey` FOREIGN KEY (`addedBy`) REFERENCES `Staff`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Punishments` ADD CONSTRAINT `Punishments_id_fkey` FOREIGN KEY (`id`) REFERENCES `Guild`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Punishments` ADD CONSTRAINT `Punishments_id_fkey` FOREIGN KEY (`id`) REFERENCES `Guild`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Logs` ADD CONSTRAINT `Logs_executedBy_fkey` FOREIGN KEY (`executedBy`) REFERENCES `Staff`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
