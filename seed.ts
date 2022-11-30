@@ -82,6 +82,7 @@ const fakeServers = (staffMember: Staff): BadServers[] => {
             type: faker.helpers.arrayElement(types),
             oldNames: '',
             addedBy: staffMember.id,
+            reason: faker.lorem.sentence(),
             invite: faker.random.alphaNumeric(5),
             createdAt: new Date(),
             updatedAt: new Date(),
