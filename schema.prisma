@@ -1,106 +1,118 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+    provider = "mysql"
+    url      = env("DATABASE_URL")
 }
 
 model Users {
-    id              String              @id @unique @db.VarChar(32)
-    last_username   String
-    avatar          String
-    type            UserType
-    status          UserStatus          @default(BLACKLISTED)
-    appeals         Int                 @default(0)
-    reason          String?
-    servers         Imports[]
-    notes           Notes[]
+    id            String     @id @unique @db.VarChar(32)
+    last_username String
+    avatar        String
+    type          UserType
+    status        UserStatus @default(BLACKLISTED)
+    appeals       Int        @default(0)
+    reason        String?
+    servers       Imports[]
+    notes         Notes[]
 }
 
 model Notes {
-    nId             Int                 @id @default(autoincrement())
-    id              String              @db.VarChar(32)
-    note            String              @db.LongText()
-    addedBy         String
-    createdAt       DateTime            @default(now())
-    user            Users               @relation(fields: [id], references: [id])
-    staff           Staff               @relation(fields: [addedBy], references: [id])
+    nId       Int      @id @default(autoincrement())
+    id        String   @db.VarChar(32)
+    note      String   @db.LongText()
+    addedBy   String
+    createdAt DateTime @default(now())
+    user      Users    @relation(fields: [id], references: [id])
+    staff     Staff    @relation(fields: [addedBy], references: [id])
 }
 
 model Imports {
-    id              String              @db.VarChar(32)
-    server          String
-    roles           String              @db.MediumText()
-    type            UserType
-    appealed        Boolean             @default(false)
-    BadServer       BadServers          @relation(fields: [server], references: [id])
-    User            Users               @relation(fields: [id], references: [id])
-    createdAt       DateTime            @default(now())
-    updatedAt       DateTime            @updatedAt
+    id        String     @db.VarChar(32)
+    server    String
+    roles     String     @db.MediumText()
+    type      UserType
+    appealed  Boolean    @default(false)
+    BadServer BadServers @relation(fields: [server], references: [id])
+    User      Users      @relation(fields: [id], references: [id])
+    createdAt DateTime   @default(now())
+    updatedAt DateTime   @updatedAt
 
     @@unique([id, server])
-
 }
 
 model BadServers {
-    id              String              @id @unique @db.VarChar(32)
-    name            String
-    oldNames        String?             @db.LongText
-    type            ServerType
-    addedBy         String
-    invite          String?
-    staff           Staff               @relation(fields: [addedBy], references: [id])
-    Users           Imports[]
-    createdAt       DateTime            @default(now())
-    updatedAt       DateTime            @updatedAt
+    id        String     @id @unique @db.VarChar(32)
+    name      String
+    oldNames  String?    @db.LongText
+    type      ServerType
+    addedBy   String
+    invite    String?
+    reason    String     @default("None provided")
+    staff     Staff      @relation(fields: [addedBy], references: [id])
+    Users     Imports[]
+    createdAt DateTime   @default(now())
+    updatedAt DateTime   @updatedAt
 }
 
 model Staff {
-    id              String              @id @unique @db.VarChar(32)
-    role            StaffRoles          @default(ADMIN)
-    appeals         Int                 @default(0)
-    BadServers      BadServers[]
-    AuditLogs       Logs[]
-    Notes           Notes[]
-    createdAt       DateTime            @default(now())
-    updatedAt       DateTime            @updatedAt
+    id         String       @id @unique @db.VarChar(32)
+    role       StaffRoles   @default(ADMIN)
+    appeals    Int          @default(0)
+    BadServers BadServers[]
+    AuditLogs  Logs[]
+    Notes      Notes[]
+    createdAt  DateTime     @default(now())
+    updatedAt  DateTime     @updatedAt
 }
 
 model Guild {
-    id              String              @id @unique @db.VarChar(32)
-    name            String
-    logChannel      String
-    punishments     Punishments?
-    createdAt       DateTime            @default(now())
-    updatedAt       DateTime            @updatedAt
+    id          String       @id @unique @db.VarChar(32)
+    name        String
+    logChannel  String
+    punishments Punishments?
+    Bans        Bans[]
+    Roles       Roles[]
+    createdAt   DateTime     @default(now())
+    updatedAt   DateTime     @updatedAt
 }
 
 model Punishments {
-    id              String              @id @unique @db.VarChar(32)
-    owner           Punish              @default(BAN)
-    supporter       Punish              @default(KICK)
-    leaker          Punish              @default(WARN)
-    cheater         Punish              @default(WARN)
-    other           Punish              @default(WARN)
-    enabled         Boolean             @default(false)
-    unban           Boolean             @default(false)
-    globalCheck     Boolean             @default(false)
-    guild           Guild               @relation(fields: [id], references: [id])
-    roleId          String?             @db.VarChar(32)
+    id          String  @id @unique @db.VarChar(32)
+    owner       Punish  @default(BAN)
+    supporter   Punish  @default(KICK)
+    leaker      Punish  @default(WARN)
+    cheater     Punish  @default(WARN)
+    other       Punish  @default(WARN)
+    enabled     Boolean @default(false)
+    unban       Boolean @default(false)
+    globalCheck Boolean @default(false)
+    guild       Guild   @relation(fields: [id], references: [id])
+    roleId      String? @db.VarChar(32)
+}
+
+model Bans {
+    id    String @id @db.VarChar(32)
+    guild String @db.VarChar(32)
+    Guild Guild  @relation(fields: [guild], references: [id])
+}
+
+model Roles {
+    id    String @id @db.VarChar(32)
+    roles String @db.LongText
+    guild String @db.VarChar(32)
+    Guild Guild  @relation(fields: [guild], references: [id])
 }
 
 model Logs {
-    id              Int                 @id @default(autoincrement())
-    executedBy      String              @db.VarChar(32)
-    action          LogActions
-    message         String              @db.LongText
-    createdAt       DateTime            @default(now())
-    staffMember     Staff               @relation(fields: [executedBy], references: [id])
+    id          Int        @id @default(autoincrement())
+    executedBy  String     @db.VarChar(32)
+    action      LogActions
+    message     String     @db.LongText
+    createdAt   DateTime   @default(now())
+    staffMember Staff      @relation(fields: [executedBy], references: [id])
 }
 
 enum LogActions {
@@ -123,6 +135,7 @@ enum LogActions {
 }
 
 enum Punish {
+    ROLE
     WARN
     KICK
     BAN
