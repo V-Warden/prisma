@@ -25,7 +25,7 @@ model Notes {
     note      String   @db.LongText()
     addedBy   String
     createdAt DateTime @default(now())
-    user      Users    @relation(fields: [id], references: [id])
+    user      Users    @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: Cascade)
     staff     Staff    @relation(fields: [addedBy], references: [id])
 }
 
@@ -35,8 +35,8 @@ model Imports {
     roles     String     @db.MediumText()
     type      UserType
     appealed  Boolean    @default(false)
-    BadServer BadServers @relation(fields: [server], references: [id])
-    User      Users      @relation(fields: [id], references: [id])
+    BadServer BadServers @relation(fields: [server], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    User      Users      @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: Cascade)
     createdAt DateTime   @default(now())
     updatedAt DateTime   @updatedAt
 
@@ -51,7 +51,7 @@ model BadServers {
     addedBy   String
     invite    String?
     reason    String     @default("None provided")
-    staff     Staff      @relation(fields: [addedBy], references: [id])
+    staff     Staff      @relation(fields: [addedBy], references: [id], onDelete: NoAction, onUpdate: Cascade)
     Users     Imports[]
     createdAt DateTime   @default(now())
     updatedAt DateTime   @updatedAt
