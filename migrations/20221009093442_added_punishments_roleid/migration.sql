@@ -1,4 +1,4 @@
 -- AlterTable
-ALTER TABLE `punishments`
+ALTER TABLE `Punishments`
  ADD COLUMN `roleId` VARCHAR(32) NULL;
 
