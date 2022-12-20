@@ -61,6 +61,7 @@ const createUser = async (server: BadServers): Promise<void> => {
         roles: roles.join(','),
         type: User.type,
         appealed: User.status === 'APPEALED' ? true : false,
+        reason: faker.lorem.sentence(),
         createdAt: new Date(),
         updatedAt: new Date(),
     };
