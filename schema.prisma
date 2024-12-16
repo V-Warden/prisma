@@ -83,17 +83,23 @@ model Guild {
 }
 
 model Punishments {
-    id          String  @id @unique @db.VarChar(32)
-    owner       Punish  @default(BAN)
-    supporter   Punish  @default(KICK)
-    leaker      Punish  @default(WARN)
-    cheater     Punish  @default(WARN)
-    other       Punish  @default(WARN)
-    enabled     Boolean @default(false)
-    unban       Boolean @default(false)
-    globalCheck Boolean @default(false)
-    guild       Guild   @relation(fields: [id], references: [id])
-    roleId      String? @db.VarChar(32)
+    id             String  @id @unique @db.VarChar(32)
+    owner          Punish  @default(BAN)
+    supporter      Punish  @default(KICK)
+    leaker         Punish  @default(WARN)
+    cheater        Punish  @default(WARN)
+    other          Punish  @default(WARN)
+    enabled        Boolean @default(false)
+    unban          Boolean @default(false)
+    globalCheck    Boolean @default(false)
+    guild          Guild   @relation(fields: [id], references: [id])
+    roleId         String? @db.VarChar(32)
+    banAppeal      Boolean @default(false)
+    unbanOther     Boolean @default(true)
+    unbanLeaker    Boolean @default(true)
+    unbanCheater   Boolean @default(true)
+    unbanSupporter Boolean @default(true)
+    unbanOwner     Boolean @default(true)
 }
 
 model Bans {
